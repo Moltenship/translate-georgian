@@ -21,7 +21,8 @@ bot.command("start", (ctx) =>
 
 bot.on("message:text", (ctx) => {
   const converted = transliterate(ctx.message.text);
-  return ctx.reply(converted);
+  const escaped = converted.replace(/\\/g, "\\\\").replace(/`/g, "\\`");
+  return ctx.reply(`\`${escaped}\``, { parse_mode: "MarkdownV2" });
 });
 
 bot.start();
