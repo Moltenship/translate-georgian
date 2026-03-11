@@ -77,13 +77,14 @@ const MULTI_CHAR_PATTERNS: readonly [string, string][] = [
   ["JH", "ჟ"],
 ];
 
-// For ambiguous consonants (t/k/p): plain = aspirated (more common),
-// apostrophe variant = ejective (handled in MULTI_CHAR_PATTERNS above).
-// e.g. "tbilisi" → თბილისი (aspirated თ), "t'bilisi" → ტბილისი (ejective ტ)
+// For ambiguous consonants: plain t/k = aspirated (თ/ქ), plain p = ejective (პ).
+// Apostrophe variants: t'/k'/p' = ejective (ტ/კ/პ).
+// In informal Georgian chat, "p" almost always means პ; ფ is reached via "ph" or "f".
+// e.g. "tbilisi" → თბილისი, "t'bilisi" → ტბილისი, "portali" → პორთალი
 const SINGLE_CHAR_MAP: Readonly<Record<string, string>> = {
   a: "ა", b: "ბ", g: "გ", d: "დ", e: "ე", v: "ვ", z: "ზ",
   t: "თ", i: "ი", k: "ქ", l: "ლ", m: "მ", n: "ნ", o: "ო",
-  p: "ფ", r: "რ", s: "ს", u: "უ",
+  p: "პ", r: "რ", s: "ს", u: "უ",
   f: "ფ", // loanwords
   q: "ყ", x: "ხ", j: "ჯ", h: "ჰ",
   w: "წ", // QWERTY keyboard convention
@@ -92,7 +93,7 @@ const SINGLE_CHAR_MAP: Readonly<Record<string, string>> = {
 
   A: "ა", B: "ბ", G: "გ", D: "დ", E: "ე", V: "ვ", Z: "ზ",
   T: "თ", I: "ი", K: "ქ", L: "ლ", M: "მ", N: "ნ", O: "ო",
-  P: "ფ", R: "რ", S: "ს", U: "უ",
+  P: "პ", R: "რ", S: "ს", U: "უ",
   F: "ფ",
   Q: "ყ", X: "ხ", J: "ჯ", H: "ჰ",
   W: "წ",
