@@ -1,0 +1,17 @@
+name = "tr-bot"
+main = "src/index.ts"
+compatibility_date = "2024-04-05"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+BOT_INFO = """{
+    "id": 8663635208,
+    "is_bot": true,
+    "first_name": "Translate Georgian",
+    "username": "translate_georgian_eng_bot",
+    "can_join_groups": true,
+    "can_read_all_group_messages": false,
+    "supports_inline_queries": false,
+    "can_connect_to_business": false,
+    "has_main_web_app": false
+}"""

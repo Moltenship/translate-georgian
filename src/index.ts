@@ -1,29 +1,30 @@
-import "dotenv/config";
-import { Bot } from "grammy";
+import { Bot, webhookCallback } from "grammy";
 import { transliterate } from "./transliterate.js";
 
-const token = process.env.BOT_TOKEN;
-if (!token) {
-  console.error("Missing BOT_TOKEN environment variable. Copy .env.example to .env and set your token.");
-  process.exit(1);
+export interface Env {
+  BOT_INFO: string;
+  BOT_TOKEN: string;
 }
 
-const bot = new Bot(token);
+export default {
+  async fetch(request: Request, env: Env): Promise<Response> {
+    const bot = new Bot(env.BOT_TOKEN, { botInfo: JSON.parse(env.BOT_INFO) });
 
-bot.command("start", (ctx) =>
-  ctx.reply(
-    "გამარჯობა! 👋\n\n" +
-    "Send me Georgian text in Latin letters and I'll convert it to Georgian script.\n\n" +
-    "Example: gamarjoba → გამარჯობა\n" +
-    "Example: rogor khar? → როგორ ხარ?"
-  )
-);
+    bot.command("start", (ctx) =>
+      ctx.reply(
+        "გამარჯობა! 👋\n\n" +
+          "Send me Georgian text in Latin letters and I'll convert it to Georgian script.\n\n" +
+          "Example: gamarjoba → გამარჯობა\n" +
+          "Example: rogor khar? → როგორ ხარ?",
+      ),
+    );
 
-bot.on("message:text", (ctx) => {
-  const converted = transliterate(ctx.message.text);
-  const escaped = converted.replace(/\\/g, "\\\\").replace(/`/g, "\\`");
-  return ctx.reply(`\`${escaped}\``, { parse_mode: "MarkdownV2" });
-});
+    bot.on("message:text", (ctx) => {
+      const converted = transliterate(ctx.message.text);
+      const escaped = converted.replace(/\\/g, "\\\\").replace(/`/g, "\\`");
+      return ctx.reply(`\`${escaped}\``, { parse_mode: "MarkdownV2" });
+    });
 
-bot.start();
-console.log("Bot is running...");
+    return webhookCallback(bot, "cloudflare-mod")(request);
+  },
+};
