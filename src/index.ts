@@ -25,6 +25,7 @@ export default {
       const encoded = encodeURIComponent(converted);
       return ctx.reply(`\`${escaped}\``, {
         parse_mode: "MarkdownV2",
+        reply_to_message_id: ctx.message.message_id,
         reply_markup: {
           inline_keyboard: [
             [
