@@ -22,7 +22,18 @@ export default {
     bot.on("message:text", (ctx) => {
       const converted = transliterate(ctx.message.text);
       const escaped = converted.replace(/\\/g, "\\\\").replace(/`/g, "\\`");
-      return ctx.reply(`\`${escaped}\``, { parse_mode: "MarkdownV2" });
+      const encoded = encodeURIComponent(converted);
+      return ctx.reply(`\`${escaped}\``, {
+        parse_mode: "MarkdownV2",
+        reply_markup: {
+          inline_keyboard: [
+            [
+              { text: "Google Translate", url: `https://translate.google.com/?sl=ka&tl=ru&text=${encoded}` },
+              { text: "Yandex Translate", url: `https://translate.yandex.com/?lang=ka-ru&text=${encoded}` },
+            ],
+          ],
+        },
+      });
     });
 
     return webhookCallback(bot, "cloudflare-mod")(request);
